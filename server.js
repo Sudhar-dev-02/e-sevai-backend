@@ -28,10 +28,22 @@ app.use(helmet({
 }));
 
 // CORS configuration
+const allowedOrigins = [
+  "http://localhost:5173",
+  "https://sudhar-dev-02.github.io",
+  "https://sudhar-dev-02.github.io/e-sevai-frontend",
+  "netlify.app"
+];
+
 app.use(cors({
   origin: function (origin, callback) {
-    // Dynamically allow any origin (e.g. Github, Netlify, localhost)
-    callback(null, true);
+    if (!origin) return callback(null, true);
+
+    if (allowedOrigins.includes(origin)) {
+      return callback(null, true);
+    } else {
+      return callback(new Error("CORS not allowed"));
+    }
   },
   credentials: true
 }));
